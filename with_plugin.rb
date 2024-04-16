@@ -1,5 +1,7 @@
 require 'aws-sdk-sqs'
 require 'dotenv'
+require 'benchmark'
+
 
 Dotenv.load
 
@@ -26,28 +28,26 @@ end
 # Continuous message consumption loop
 loop do
   begin
-    response = log_time("receive") do
-      sqs.receive_message({
-        queue_url: queue_url,
-        wait_time_seconds: 10
-      })
-    end
-
-    if response.messages.any?
-      response.messages.each do |message|
-        # puts "Received message: #{message.id}"
-
-        log_time("delete") do
-          sqs.delete_message({
-            queue_url:,
-            receipt_handle: message.receipt_handle
-          })
-        end
-
-        # puts "Deleted message #{message.id} from the queue"
+    Benchmark.bm do |x|
+      messages = x.report(:receive) do
+        sqs.receive_message({
+          queue_url: queue_url,
+          wait_time_seconds: 10
+        })
       end
-    else
-      puts "No messages available in the queue"
+
+      if messages.messages.any?
+        x.report(:delete) do
+          messages.messages.each do |message|
+            sqs.delete_message({
+              queue_url:,
+              receipt_handle: message.receipt_handle
+            })
+          end
+        end
+      else
+        puts "No messages available in the queue"
+      end
     end
   rescue StandardError => e
     puts "Error receiving message: #{e.message}"

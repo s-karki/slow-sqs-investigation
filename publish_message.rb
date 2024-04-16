@@ -11,7 +11,7 @@ Aws.config.update({
 client = Aws::SQS::Client.new
 queue_url = ENV['QUEUE_URL']
 
-num_messages = 1000
+num_messages = 100000
 batch_size = 10
 
 
