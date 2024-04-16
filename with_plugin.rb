@@ -29,16 +29,18 @@ end
 loop do
   begin
     Benchmark.bm do |x|
-      messages = x.report(:receive) do
-        sqs.receive_message({
+      responses = []
+
+      x.report(:receive) do
+        responses = sqs.receive_message({
           queue_url: queue_url,
           wait_time_seconds: 10
         })
       end
 
-      if messages.messages.any?
+      if responses.messages.any?
         x.report(:delete) do
-          messages.messages.each do |message|
+          responses.messages.each do |message|
             sqs.delete_message({
               queue_url:,
               receipt_handle: message.receipt_handle
@@ -47,6 +49,7 @@ loop do
         end
       else
         puts "No messages available in the queue"
+
       end
     end
   rescue StandardError => e
