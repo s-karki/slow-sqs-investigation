@@ -3,6 +3,7 @@ require 'dotenv'
 require 'benchmark'
 
 
+
 Dotenv.load
 
 Aws.config.update({
@@ -15,6 +16,10 @@ sqs = Aws::SQS::Client.new
 
 # Specify the URL of the SQS queue
 queue_url = ENV['QUEUE_URL']
+
+$stdout = File.new('benchmark.log', 'w')
+$stdout.sync = true
+
 
 def log_time(op_name, &block)
   start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
