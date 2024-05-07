@@ -276,6 +276,7 @@ DEPENDENCIES
   aws-sdk-sqs (~> 1.72)
   bootsnap
   capybara
+  concurrent-ruby (= 1.2.3)
   debug
   importmap-rails
   jbuilder

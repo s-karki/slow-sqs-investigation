@@ -23,4 +23,6 @@ Rails.application.config.to_prepare do
   Shoryuken.configure_client do |config|
     config.sqs_client = Aws::SQS::Client.new(sqs_client_options)
   end
+
+  Shoryuken.launcher_executor = Concurrent::CachedThreadPool.new(auto_terminate: true, name: "shoryuken")
 end
