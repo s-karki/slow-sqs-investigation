@@ -7,5 +7,6 @@ class ShoryukenConsumer
 
   def perform(sqs_msg, id)
     puts "processing job #{id}}"
+    sqs_msg.delete
   end
 end
