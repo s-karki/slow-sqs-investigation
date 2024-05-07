@@ -69,3 +69,5 @@ end
 gem "shoryuken", "~> 6.2"
 
 gem "aws-sdk-sqs", "~> 1.72"
+
+gem "aws-sdk-core", "3.193.0"
