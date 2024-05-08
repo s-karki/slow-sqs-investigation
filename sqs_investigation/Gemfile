@@ -73,3 +73,5 @@ gem "aws-sdk-sqs", "~> 1.72"
 gem "aws-sdk-core", "3.193.0"
 
 gem "concurrent-ruby", "1.2.3"
+
+gem "ddtrace", "~> 1.20"
